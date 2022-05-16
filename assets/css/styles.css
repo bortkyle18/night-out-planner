@@ -1,0 +1,57 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.title {
+    font-size: 10vw;
+    margin: 0;
+    background-color: #190061;
+    color: whitesmoke;
+}
+
+.intro {
+    font-size: 4vw;
+    margin: 0;
+    background-color: #190061;
+    color: whitesmoke;
+    padding-bottom: 5vw;
+}
+
+.background{
+    background-color: #190061;
+    color: whitesmoke;
+}
+
+.form {
+    padding: 2vw 1vw 1vw 1vw;
+}
+
+#foodLi {
+    margin-right: 2vw;
+}
+
+#eventLi {
+    margin-left: 2vw;
+}
+
+#button {
+    font-size: 3vw;
+}
+
+.input-group-label {
+    font-size: 3vw;
+}
+
+.input-group-field {
+    font-size: 3vw;
+    padding-left: 1vw;
+}
+
+.notFound {
+    color: rgb(196, 8, 8);
+}
+
+.primary {
+    font-size: 3.5vw;
+}
