@@ -75,7 +75,7 @@ var eventLi = function() {
 // End of events code
 
 
-
+ 
 // Find food and print to page
 var foodLi = function() {
     // clear list
