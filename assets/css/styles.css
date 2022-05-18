@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-image: url("../images/modern-city-night-skyline-neon-cartoon-vector-24003327.webp");
+    background-size: cover;
+    background-position: center;
+    text-shadow: 4px 4px 5px #190061;
+}
+
+.title {
+    font-size: 10vw;
+    margin: 0;
+    color: whitesmoke;
+}
+
+#city {
+    padding-left: 1vw;
+}
+
+.intro {
+    font-size: 4vw;
+    margin: 0;
+    color: whitesmoke;
+    padding-bottom: 5vw;
+}
+
+.background{
+    background-color: #190061;
+    color: whitesmoke;
+}
+
+.form {
+    padding: 2vw 1vw 1vw 1vw;
+    background-color: #190061;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+}
+
+#foodLi, 
+#eventLi {
+    margin-right: 2vw;
+}
+
+#state {
+    font-size: 3vw;
+    height: 100%;
+}
+
+.input-group-label, 
+.input-group-field,
+#searchButton  {
+    font-size: 3vw;
+}
+
+.notFound {
+    font-size: 4vw;
+}
+
+.grid-x {
+    font-size: 2.5vw;
+
+}
+
+.notFound {
+    color: rgb(196, 8, 8);
+}
+
+.primary {
+    font-size: 3.5vw;
+}
+
+@media screen and (min-width: 768px) {
+    .title {
+        font-size: 8vw;
+    }
+    
+    .intro {
+        font-size: 3vw;
+    }
+    
+    .form {
+        padding: 2vw 1vw 1vw 1vw;
+    }
+    
+    #foodLi, 
+    #eventLi {
+        margin-right: 2vw;
+    }
+    
+    #state,
+    #city {
+        font-size: 2vw;
+    }
+    
+    .input-group-label, 
+    .input-group-field,
+    #searchButton  {
+        font-size: 2vw;
+    }
+    
+    .notFound {
+        font-size: 3vw;
+    }
+    
+    .grid-x {
+        font-size: 2vw;
+    
+    }
+    
+    .primary {
+        font-size: 3vw;
+    }
+}
