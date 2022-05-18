@@ -138,14 +138,14 @@ var foodLi = function() {
 
     var noFoodFound = function() {
         var foodHeader = $("<h2>")
-            .text("WARNING: Restaurants Not Found")
+            .text("WARNING: Restuarants Not Found")
             .addClass("text-center notFound");
         $("#foodLi").append(foodHeader);
 
         var foodList = $("<li>")
             .addClass("alert-box callout alert");
         var noFoodFound = $("<p>")
-            .text("Oh no! There are no restaurants found in the city provided. Please check the spelling of the city you entered or search cities around your area to find an event for you!");
+            .text("Oh no! There are no restuarants found in the city provided. Please check the spelling of the city you entered or search cities around your area to find an event for you!");
         foodList.append(noFoodFound);
 
         $("#foodLi").append(foodList);
