@@ -7,10 +7,12 @@ var APIkey = "67mqRNvaaHn5QdfWrCTna5d97oAiv8E-L2rhNIQ0CfS9TIqsqV-dmw9UJJ6KmHlWW_
 var getEventRepo = function() {
 
     // Get entered city and state
-    var cityEnter = $("#city").val();
-    var stateEnter = $("#state").val();
+    var postcode = $("#postcode").val();
+    // var cityEnter = $("#city").val();
+    // var stateEnter = $("#state").val();
     // pull up to 200 responses from the requested city - sorted by date of event
-    var apiUrl = "https://app.ticketmaster.com/discovery/v2/events.json?size=50&city=" + cityEnter + "&stateCode=" + stateEnter + "&sort=date,asc&apikey=syoZ02A5zn7KOdclO7ZeAyKBCV7U8DK7";
+    // var apiUrl = "https://app.ticketmaster.com/discovery/v2/events.json?size=50&city=" + cityEnter + "&stateCode=" + stateEnter + "&sort=date,asc&apikey=syoZ02A5zn7KOdclO7ZeAyKBCV7U8DK7";
+    var apiUrl = "https://app.ticketmaster.com/discovery/v2/events.json?size=50&postalCode=" + postcode + "&sort=date,asc&apikey=syoZ02A5zn7KOdclO7ZeAyKBCV7U8DK7";
 
     $.ajax({
         type:"GET",
@@ -35,6 +37,8 @@ var eventsFound = function(events) {
         .addClass("text-center");
     $("#eventLi").append(eventsHeader);
 
+    console.log(events)
+
     for(var i = 0; i < events.length; i++) {
         var eventList = $("<li>")
         .addClass("callout primary small");
@@ -43,12 +47,26 @@ var eventsFound = function(events) {
             .attr("href",events[i].url)
             .text(events[i].name)
             .css("font-weight","Bold");
+        var cont = $("<div>")
+            .attr('class','grid-x');
+        var col = $("<div>")
+            .attr('class','columns small-6');
+        var colImg = $("<div>")
+            .attr('class','columns small-6');
+
         var eventDate = $("<p>")
             .text(events[i].dates.start.localDate);
         var eventType = $("<p>")
             .text(events[i].classifications[0].segment.name);
+        var image = $("<img>")
+            .attr('src',events[i].images[0].url)
+            .attr('style','width:100%')
+        
+        colImg.append(image);
+        col.append(eventType,eventDate)
+        cont.append(col,colImg)
 
-        eventList.append(eventName,eventType,eventDate);
+        eventList.append(eventName,cont);
 
     $("#eventLi").append(eventList);
     };
@@ -83,18 +101,18 @@ var eventLi = function() {
 // Find food and print to page
 // Fetch restaurants 
 function searchApi() {
-    var cityEnter = $("#city").val();
-    var stateEnter = $("#state").val();
+    var postcode = $("#postcode").val();
 
     var queryUrl =
         "https://cors-anywhere.herokuapp.com/" +
         "https://api.yelp.com/v3/businesses/search?restaurants&location=" +
-        cityEnter + stateEnter +
+        postcode +
         "&limit=50";
     fetch(queryUrl, {
         method: "GET",
         headers: {
         Accept: "application/json",
+        "Access-Control-Allow-Origin":"*",
         Authorization:
             "Bearer " +
             "67mqRNvaaHn5QdfWrCTna5d97oAiv8E-L2rhNIQ0CfS9TIqsqV-dmw9UJJ6KmHlWW_Od--P0iRNlN3ujxHB0ILtCZGR-sKAUtkGgRXIf7MZqihLIq8E3_9kluVJ8YnYx",
@@ -124,32 +142,53 @@ var foodFound = function(food) {
     for(var i = 0; i < food.length; i++) {
         var foodList = $("<li>")
         .addClass("callout primary small");
-        var foodName = $("<a>")
+        let foodName = $("<a>")
             .attr('target','_blank')
             .attr("href",food[i].url)
             .text(food[i].name)
             .css("font-weight","Bold");
-        var foodType = $("<p>")
-            .text(food[i].categories[0].title);
-        var foodPrice = $("<p>")
-            .text(food[i].price);
 
-        foodList.append(foodName,foodType,foodPrice);
+
+
+            var cont = $("<div>")
+            .attr('class','grid-x');
+        var col = $("<div>")
+            .attr('class','columns small-6');
+        var colImg = $("<div>")
+            .attr('class','columns small-6');
+
+        let foodType = $("<p>")
+            .text(food[i].categories[0].title);
+        let foodPrice = $("<p>")
+            .text(food[i].price);
+        let distacne = $("<p>")
+            .text((food[i].distance/5280).toFixed(2)+"mi");
+        var image = $("<img>")
+            .attr('src',food[i].image_url)
+            .attr('style','width:100%')
+        
+        colImg.append(image);
+        col.append(foodType,foodPrice,distacne)
+        cont.append(col,colImg)
+
+
+
+        foodList.append(foodName,cont);
 
         $("#foodLi").append(foodList);
     };
 };
 
 // If no restaurants are found
-var noFoodFound = function() {
-    var foodHeader = $("<h2>")
+const noFoodFound = function() {
+    let foodHeader = $("<h2>")
         .text("WARNING: Restaurants Not Found")
         .addClass("text-center notFound");
     $("#foodLi").append(foodHeader);
 
-    var foodList = $("<li>")
+    let foodList = $("<li>")
         .addClass("alert-box callout alert");
-    var noFoodFound = $("<p>")
+    let noFoodFound = $("<p>")
         .text("Oh no! There are no restaurants found in the city provided. Please check the spelling of the city you entered or search cities around your area to find an event for you!");
     foodList.append(noFoodFound);
 
