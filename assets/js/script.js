@@ -60,10 +60,39 @@ var eventsFound = function(events) {
             .text(events[i].classifications[0].segment.name);
         var image = $("<img>")
             .attr('src',events[i].images[0].url)
-            .attr('style','width:100%')
+            .attr('style','width:100%');
+
+        var heartWrap = $("<span>").addClass("favoriteBtn not-pressed");
+        
+        const isFavorite = localStorage.getItem("event_"+events[i].name);
+        if(isFavorite){
+            var heart = $("<i>").addClass("fa fa-heart");
+        }
+        else{
+            var heart = $("<i>").addClass("fa-regular fa-heart");
+        }
+        (function(i){
+            heartWrap.click(function(){
+                if($(this).hasClass("not-pressed")){
+                    localStorage.setItem("event_"+events[i].name, JSON.stringify(events[i]));
+                    $(this).removeClass("not-pressed");
+                    $(this).addClass("pressed");
+                    $(this).find( "i" ).removeClass("fa-regular fa-heart");
+                    $(this).find( "i" ).addClass("fa fa-heart");
+                }
+                else{
+                    localStorage.removeItem("event_"+events[i].name);
+                    $(this).removeClass("pressed");
+                    $(this).addClass("not-pressed");
+                    $(this).find( "i" ).removeClass("fa fa-heart");
+                    $(this).find( "i" ).addClass("fa-regular fa-heart");
+                }
+            })
+        })(i)
+        heartWrap.append(heart)
         
         colImg.append(image);
-        col.append(eventType,eventDate)
+        col.append(eventType,eventDate,heartWrap)
         cont.append(col,colImg)
 
         eventList.append(eventName,cont);
@@ -137,7 +166,6 @@ var foodFound = function(food) {
         .text("Food")
         .addClass("text-center");
     $("#foodLi").append(foodHeader);
-    console.log(food)
 
     for(var i = 0; i < food.length; i++) {
         var foodList = $("<li>")
@@ -163,12 +191,42 @@ var foodFound = function(food) {
             .text(food[i].price);
         let distacne = $("<p>")
             .text((food[i].distance/5280).toFixed(2)+"mi");
+
+        var heartWrap = $("<span>").addClass("favoriteBtn not-pressed");
+
+        const isFavorite = localStorage.getItem("food_"+food[i].name);
+        if(isFavorite){
+            var heart = $("<i>").addClass("fa fa-heart");
+        }
+        else{
+            var heart = $("<i>").addClass("fa-regular fa-heart");
+        }
+        (function(i){
+            heartWrap.click(function(){
+                if($(this).hasClass("not-pressed")){
+                    localStorage.setItem("food_"+food[i].name, JSON.stringify(food[i]));
+                    $(this).removeClass("not-pressed");
+                    $(this).addClass("pressed");
+                    $(this).find( "i" ).removeClass("fa-regular fa-heart");
+                    $(this).find( "i" ).addClass("fa fa-heart");
+                }
+                else{
+                    localStorage.removeItem("food_"+food[i].name);
+                    $(this).removeClass("pressed");
+                    $(this).addClass("not-pressed");
+                    $(this).find( "i" ).removeClass("fa fa-heart");
+                    $(this).find( "i" ).addClass("fa-regular fa-heart");
+                }
+            })
+        })(i)
+        heartWrap.append(heart)
+
         var image = $("<img>")
             .attr('src',food[i].image_url)
             .attr('style','width:100%')
         
         colImg.append(image);
-        col.append(foodType,foodPrice,distacne)
+        col.append(foodType,foodPrice,distacne, heartWrap);
         cont.append(col,colImg)
 
 
@@ -177,6 +235,8 @@ var foodFound = function(food) {
 
         $("#foodLi").append(foodList);
     };
+
+
 };
 
 // If no restaurants are found
@@ -208,6 +268,93 @@ var search = function () {
     eventLi();
     foodLi();
 }
+
+$('document').ready(function(){
+    console.log("Asdfafdsf")
+
+    let keys = Object.keys(localStorage)
+
+    for(var i = 0; i < keys.length; i++) {
+
+        let item = JSON.parse(localStorage.getItem(keys[i]));
+        console.log(keys[i].includes("event"), item)
+
+        if(keys[i].includes("event")){
+
+            var eventList = $("<li>")
+            .addClass("callout primary small");
+            var eventName = $("<a>")
+                .attr('target','_blank')
+                .attr("href",item.url)
+                .text(item.name)
+                .css("font-weight","Bold");
+            var cont = $("<div>")
+                .attr('class','grid-x');
+            var col = $("<div>")
+                .attr('class','columns small-6');
+            var colImg = $("<div>")
+                .attr('class','columns small-6');
+    
+            var eventDate = $("<p>")
+                .text(item.dates.start.localDate);
+            var eventType = $("<p>")
+                .text(item.classifications[0].segment.name);
+            var image = $("<img>")
+                .attr('src',item.images[0].url)
+                .attr('style','width:100%');
+            
+            colImg.append(image);
+            col.append(eventType,eventDate)
+            cont.append(col,colImg)
+    
+            eventList.append(eventName,cont);
+    
+            $("#favoriteEventLi").append(eventList);
+        }
+        else{
+            var foodList = $("<li>")
+            .addClass("callout primary small");
+            let foodName = $("<a>")
+                .attr('target','_blank')
+                .attr("href",item.url)
+                .text(item.name)
+                .css("font-weight","Bold");
+
+
+
+                var cont = $("<div>")
+                .attr('class','grid-x');
+            var col = $("<div>")
+                .attr('class','columns small-6');
+            var colImg = $("<div>")
+                .attr('class','columns small-6');
+
+            let foodType = $("<p>")
+                .text(item.categories[0].title);
+            let foodPrice = $("<p>")
+                .text(item.price);
+            let distacne = $("<p>")
+                .text((item.distance/5280).toFixed(2)+"mi");
+
+            
+
+            var image = $("<img>")
+                .attr('src',item.image_url)
+                .attr('style','width:100%')
+            
+            colImg.append(image);
+            col.append(foodType,foodPrice,distacne);
+            cont.append(col,colImg)
+
+
+
+            foodList.append(foodName,cont);
+
+            $("#favoriteFoodLi").append(foodList);
+        }
+    }
+
+})
 
 $("#searchButton").on("click",search);
 
